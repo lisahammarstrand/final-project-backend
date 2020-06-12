@@ -1,0 +1,12 @@
+[
+  {
+    "name": "Lisa Larsson",
+    "email": "lisa@larsson.se",
+    "password": "lisalisa"
+  },
+  {
+    "name": "Kalle Karlsson",
+    "email": "kalle@karlsson.se",
+    "password": "kallekalle"
+  }
+]
