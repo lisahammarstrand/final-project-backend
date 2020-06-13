@@ -5,7 +5,6 @@ import mongoose from 'mongoose'
 import crypto from 'crypto'
 import bcrypt from 'bcrypt'
 /* import testUserData from './data/testuser.json' */
-import testBookingData from './data/testbooking.json'
 import testTrainingData from './data/testtraining.json'
 
 const mongoUrl = process.env.MONGO_URL || "mongodb://localhost/finalproject"
@@ -31,25 +30,19 @@ const User = mongoose.model('User', {
   accessToken: {
     type: String,
     default: () => crypto.randomBytes(128).toString('hex')
-  }
-})
-
-const Booking = mongoose.model('Booking', {
-  package: {
+  },
+  activepackage: {
     type: String,
     required: true
   },
-  date: {
-    type: String,
-    required: true
-  },
-  trainingprogram: {
+  training: {
     type: String,
     required: true
   }
 })
 
-const Training = mongoose.model('Training', {
+
+const TrainingStats = mongoose.model('TrainingStats', {
   times: {
     type: Number,
     required: true
@@ -60,10 +53,10 @@ if (process.env.RESET_DATABASE) {
   console.log('Resetting database ...')
 
   const seedDatabase = async () => {
-    await Booking.deleteMany()
-    await Training.deleteMany()
-    await testBookingData.forEach((testBooking) => new Booking(testBooking).save())
-    await testTrainingData.forEach((testTraining) => new Training(testTraining).save())
+    /*  await Booking.deleteMany() */
+    await TrainingStats.deleteMany()
+    /*  await testBookingData.forEach((testBooking) => new Booking(testBooking).save()) */
+    await testTrainingData.forEach((testTraining) => new TrainingStats(testTraining).save())
   }
   seedDatabase()
 }
@@ -76,7 +69,7 @@ const app = express()
 app.use(cors())
 app.use(bodyParser.json())
 
-// Middleware to check user's access token in DB
+/* // Middleware to check user's access token in DB
 const authenticateUser = async (req, res, next) => {
   const user = await User.findOne({ accessToken: req.header('Authorization') })
   if (user) {
@@ -85,17 +78,22 @@ const authenticateUser = async (req, res, next) => {
   } else {
     res.status(403).json({ loggedOut: true, message: 'Please log in to access content' })
   }
-}
+} */
 
 // Start defining your routes here
 app.get('/', (req, res) => {
   res.send('Final project backend')
 })
 
+app.get('/users', async (req, res) => {
+  const users = await User.find().exec()
+  res.json(users)
+})
+
 app.post('/users', async (req, res) => {
   try {
-    const { name, email, password } = req.body
-    const user = new User({ name, email, password: bcrypt.hashSync(password) })
+    const { name, email, password, activepackage, training } = req.body
+    const user = new User({ name, email, password: bcrypt.hashSync(password), activepackage, training })
     user.save()
     res.status(201).json({ id: user._id, accessToken: user.accessToken })
   } catch (err) {
@@ -103,11 +101,12 @@ app.post('/users', async (req, res) => {
   }
 })
 
-app.get('/bookings', authenticateUser)
+/* app.get('/bookings', authenticateUser) */
 
-app.get('/bookings', async (req, res) => {
-  const bookings = await Booking.find().exec()
-  res.json(bookings)
+app.get('/users/:userId', async (req, res) => {
+  const userId = req.params.userId
+  const userProfile = await User.findOne({ userId: _id }).exec()
+  res.json(userProfile)
 })
 
 app.post('/sessions', async (req, res) => {
@@ -119,9 +118,9 @@ app.post('/sessions', async (req, res) => {
   }
 })
 
-app.get('/training', async (req, res) => {
-  const trainings = await Training.find().exec()
-  res.json(trainings)
+app.get('/trainingstats', async (req, res) => {
+  const trainingStats = await TrainingStats.find().exec()
+  res.json(trainingStats)
 })
 
 // Start the server
