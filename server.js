@@ -4,7 +4,7 @@ import cors from 'cors'
 import mongoose from 'mongoose'
 import crypto from 'crypto'
 import bcrypt from 'bcrypt'
-/* import testUserData from './data/testuser.json' */
+import testUserData from './data/testuser.json'
 import testTrainingData from './data/testtraining.json'
 
 const mongoUrl = process.env.MONGO_URL || "mongodb://localhost/finalproject"
@@ -53,14 +53,13 @@ if (process.env.RESET_DATABASE) {
   console.log('Resetting database ...')
 
   const seedDatabase = async () => {
-    /*  await Booking.deleteMany() */
+    await User.deleteMany()
     await TrainingStats.deleteMany()
-    /*  await testBookingData.forEach((testBooking) => new Booking(testBooking).save()) */
+    await testUserData.forEach((testUser) => new User(testUser).save())
     await testTrainingData.forEach((testTraining) => new TrainingStats(testTraining).save())
   }
   seedDatabase()
 }
-
 
 const port = process.env.PORT || 8080
 const app = express()
@@ -101,27 +100,50 @@ app.post('/users', async (req, res) => {
   }
 })
 
-/* app.get('/bookings', authenticateUser) */
+/* app.get('/users', authenticateUser) */
 
 app.get('/users/:userId', async (req, res) => {
   const userId = req.params.userId
-  const userProfile = await User.findOne({ userId: _id }).exec()
+  const userProfile = await User.findOne({ _id: userId }).exec()
   res.json(userProfile)
 })
 
-app.post('/sessions', async (req, res) => {
+/* app.post('/sessions', async (req, res) => {
   const user = await User.findOne({ email: req.body.email })
   if (user && bcrypt.compareSync(req.body.password, user.password)) {
     res.json({ userId: user._id, accessToken: user.accessToken })
   } else {
     res.status(401).json({ notFound: true, statusCode: 401, error: "Login failed" })
   }
-})
+}) */
 
 app.get('/trainingstats', async (req, res) => {
   const trainingStats = await TrainingStats.find().exec()
   res.json(trainingStats)
 })
+
+app.post('/trainingstats', async (req, res) => {
+  const { training } = req.body
+  const newTrainingStats = new TrainingStats({ training })
+  newTrainingStats.save()
+  res.status(201).json({ training })
+})
+
+app.put('/trainingstats/:statsId/update', async (req, res) => {
+  const { statsId } = req.params
+  const ERR_COULD_NOT_FIND = `Could not find ${statsId} to update`
+  try {
+    const updatedStats = await TrainingStats.updateOne(
+      { _id: statsId },
+      { $inc: { times: 1 } }
+    )
+    res.status(201).json(updatedStats)
+  } catch (err) {
+    res.status(404).json({ message: ERR_COULD_NOT_FIND })
+  }
+})
+
+
 
 // Start the server
 app.listen(port, () => {
