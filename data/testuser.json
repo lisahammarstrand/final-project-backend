@@ -4,13 +4,15 @@
     "email": "lisa@larsson.se",
     "password": "lisalisa",
     "activepackage": "Backcountry skiing in Riksgränsen",
-    "training": "Medium"
+    "training": "Medium",
+    "times": 0
   },
   {
     "name": "Kalle Karlsson",
     "email": "kalle@karlsson.se",
     "password": "kallekalle",
     "activepackage": "Skitouring in Funäsfjällen",
-    "training": "Low"
+    "training": "Low",
+    "times": 4
   }
 ]
