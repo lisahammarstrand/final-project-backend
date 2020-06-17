@@ -40,7 +40,9 @@ const User = mongoose.model('User', {
     required: true
   },
   times: {
-    type: Number
+    type: Number,
+    required: true,
+    default: 0
   }
 })
 

@@ -23,3 +23,15 @@ http://localhost:8080/users/5ee8d00be90d14052b7368c5/updatestats
 
 Login user – POST
 http://localhost:8080/sessions
+
+Live link
+https://active-vaycay-backend.herokuapp.com/
+
+https://active-vaycay-backend.herokuapp.com/users/5ee8d00be90d14052b7368c5
+
+https://active-vaycay-backend.herokuapp.com/users/5ee8d00be90d14052b7368c5
+
+https://active-vaycay-backend.herokuapp.com/users/5ee8d00be90d14052b7368c5/updatestats
+
+https://active-vaycay-backend.herokuapp.com/sessions
+
