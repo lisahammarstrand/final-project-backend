@@ -72,7 +72,7 @@ const app = express()
 app.use(cors())
 app.use(bodyParser.json())
 
-/* // Middleware to check user's access token in DB
+// Middleware to check user's access token in DB
 const authenticateUser = async (req, res, next) => {
   const user = await User.findOne({ accessToken: req.header('Authorization') })
   if (user) {
@@ -81,12 +81,14 @@ const authenticateUser = async (req, res, next) => {
   } else {
     res.status(403).json({ loggedOut: true, message: 'Please log in to access content' })
   }
-} */
+}
 
 // Start defining your routes here
 app.get('/', (req, res) => {
   res.send('Final project backend')
 })
+
+app.get('/users', authenticateUser)
 
 // WORKS - get all users
 app.get('/users', async (req, res) => {
@@ -106,8 +108,6 @@ app.post('/users', async (req, res) => {
     res.status(400).json({ message: 'Could not create user', errors: err.errors })
   }
 })
-
-/* app.get('/users', authenticateUser) */
 
 // WORKS - find one user
 app.get('/users/:userId', async (req, res) => {

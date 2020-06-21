@@ -24,14 +24,22 @@ http://localhost:8080/users/5ee8d00be90d14052b7368c5/updatestats
 Login user – POST
 http://localhost:8080/sessions
 
+
 Live link
 https://active-vaycay-backend.herokuapp.com/
 
+Get all users – GET
+https://active-vaycay-backend.herokuapp.com/users
+
+Registrer new user – POST
+https://active-vaycay-backend.herokuapp.com/users
+
+Find one user – GET
 https://active-vaycay-backend.herokuapp.com/users/5ee8d00be90d14052b7368c5
 
-https://active-vaycay-backend.herokuapp.com/users/5ee8d00be90d14052b7368c5
-
+Update training stats – PUT
 https://active-vaycay-backend.herokuapp.com/users/5ee8d00be90d14052b7368c5/updatestats
 
+Login user – POST
 https://active-vaycay-backend.herokuapp.com/sessions
 
