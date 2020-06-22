@@ -72,7 +72,7 @@ const app = express()
 app.use(cors())
 app.use(bodyParser.json())
 
-// Middleware to check user's access token in DB
+// Middleware to check user's access token in DB, gets access to the complete user object
 const authenticateUser = async (req, res, next) => {
   const user = await User.findOne({ accessToken: req.header('Authorization') })
   if (user) {
@@ -88,7 +88,7 @@ app.get('/', (req, res) => {
   res.send('Final project backend')
 })
 
-app.get('/users', authenticateUser)
+/* app.get('/users', authenticateUser) */
 
 // WORKS - get all users
 app.get('/users', async (req, res) => {
@@ -116,7 +116,32 @@ app.get('/users/:userId', async (req, res) => {
   res.json(userProfile)
 })
 
-// WORKS - Update training stats by 1
+app.get('/profile', authenticateUser)
+
+// WORKS - find one user
+app.get('/profile', async (req, res) => {
+  res.json({ userId: req.user._id, times: req.user.times, name: req.user.name, activepackage: req.user.activepackage, training: req.user.training })
+})
+
+// Update training stats by 1 
+// ? new: /profile/updatestats
+app.put('/profile/:userId', async (req, res) => {
+  const { userId } = req.params
+  const ERR_COULD_NOT_FIND = `Could not find ${userId} to update`
+  try {
+    const updatedStats = await User.updateOne(
+      { _id: userId },
+      { $inc: { times: 1 } }
+    )
+    res.status(201).json(updatedStats)
+  } catch (err) {
+    console.log(JSON.stringify(err))
+    res.status(404).json({ message: ERR_COULD_NOT_FIND })
+  }
+})
+
+// WORKS - Update training stats by 1 
+// ? new: /profile/updatestats
 app.put('/users/:userId/updatestats', async (req, res) => {
   const { userId } = req.params
   const ERR_COULD_NOT_FIND = `Could not find ${userId} to update`
@@ -131,6 +156,8 @@ app.put('/users/:userId/updatestats', async (req, res) => {
     res.status(404).json({ message: ERR_COULD_NOT_FIND })
   }
 })
+
+
 
 // WORKS - log in user
 app.post('/sessions', async (req, res) => {
