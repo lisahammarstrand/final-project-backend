@@ -5,7 +5,6 @@ import mongoose from 'mongoose'
 import crypto from 'crypto'
 import bcrypt from 'bcrypt-nodejs'
 import testUserData from './data/testuser.json'
-/* import testTrainingData from './data/testtraining.json' */
 
 const mongoUrl = process.env.MONGO_URL || "mongodb://localhost/finalproject"
 mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -46,21 +45,12 @@ const User = mongoose.model('User', {
   }
 })
 
-/* const TrainingStats = mongoose.model('TrainingStats', {
-  times: {
-    type: Number,
-    required: true
-  }
-}) */
-
 if (process.env.RESET_DATABASE) {
   console.log('Resetting database ...')
 
   const seedDatabase = async () => {
     await User.deleteMany()
-    /* await TrainingStats.deleteMany() */
     await testUserData.forEach((testUser) => new User(testUser).save())
-    /*     await testTrainingData.forEach((testTraining) => new TrainingStats(testTraining).save()) */
   }
   seedDatabase()
 }
@@ -88,8 +78,6 @@ app.get('/', (req, res) => {
   res.send('Final project backend')
 })
 
-/* app.get('/users', authenticateUser) */
-
 // WORKS - get all users
 app.get('/users', async (req, res) => {
   const users = await User.find().exec()
@@ -116,15 +104,14 @@ app.get('/users/:userId', async (req, res) => {
   res.json(userProfile)
 })
 
+// WORKS - find one user profile after authentication check – fetching data to My page in frontend
 app.get('/profile', authenticateUser)
 
-// WORKS - find one user
 app.get('/profile', async (req, res) => {
   res.json({ userId: req.user._id, times: req.user.times, name: req.user.name, activepackage: req.user.activepackage, training: req.user.training })
 })
 
-// Update training stats by 1 
-// ? new: /profile/updatestats
+// WORKS IN BACKEND, NOT IN FRONTEND – Update training stats times by 1 
 app.put('/profile/:userId', async (req, res) => {
   const { userId } = req.params
   const ERR_COULD_NOT_FIND = `Could not find ${userId} to update`
@@ -139,25 +126,6 @@ app.put('/profile/:userId', async (req, res) => {
     res.status(404).json({ message: ERR_COULD_NOT_FIND })
   }
 })
-
-// WORKS - Update training stats by 1 
-// ? new: /profile/updatestats
-app.put('/users/:userId/updatestats', async (req, res) => {
-  const { userId } = req.params
-  const ERR_COULD_NOT_FIND = `Could not find ${userId} to update`
-  try {
-    const updatedStats = await User.updateOne(
-      { _id: userId },
-      { $inc: { times: 1 } }
-    )
-    res.status(201).json(updatedStats)
-  } catch (err) {
-    console.log(JSON.stringify(err))
-    res.status(404).json({ message: ERR_COULD_NOT_FIND })
-  }
-})
-
-
 
 // WORKS - log in user
 app.post('/sessions', async (req, res) => {
@@ -185,6 +153,23 @@ app.post('/trainingstats', async (req, res) => {
   } catch (err) {
     console.log(JSON.stringify(err))
     res.status(400).json({ message: 'Could not create trainingstats', errors: err.errors })
+  }
+}) */
+
+// WORKS - Update training stats by 1 
+/* // ? new: /profile/updatestats
+app.put('/users/:userId/updatestats', async (req, res) => {
+  const { userId } = req.params
+  const ERR_COULD_NOT_FIND = `Could not find ${userId} to update`
+  try {
+    const updatedStats = await User.updateOne(
+      { _id: userId },
+      { $inc: { times: 1 } }
+    )
+    res.status(201).json(updatedStats)
+  } catch (err) {
+    console.log(JSON.stringify(err))
+    res.status(404).json({ message: ERR_COULD_NOT_FIND })
   }
 }) */
 
