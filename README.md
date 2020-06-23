@@ -19,7 +19,10 @@ Find one user – GET
 http://localhost:8080/users/5ee8d00be90d14052b7368c5
 
 Update training stats – PUT
-http://localhost:8080/users/5ee8d00be90d14052b7368c5/updatestats
+http://localhost:8080/profile/5ee8d00be90d14052b7368c5/updatestats
+
+Show user profile – GET
+http://localhost:8080/profile
 
 Login user – POST
 http://localhost:8080/sessions
@@ -38,7 +41,10 @@ Find one user – GET
 https://active-vaycay-backend.herokuapp.com/users/5ee8d00be90d14052b7368c5
 
 Update training stats – PUT
-https://active-vaycay-backend.herokuapp.com/users/5ee8d00be90d14052b7368c5/updatestats
+https://active-vaycay-backend.herokuapp.com/profile/5ee8d00be90d14052b7368c5/updatestats
+
+Show profile – GET
+https://active-vaycay-backend.herokuapp.com/profile/
 
 Login user – POST
 https://active-vaycay-backend.herokuapp.com/sessions
