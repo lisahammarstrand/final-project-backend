@@ -112,8 +112,9 @@ app.get('/profile', async (req, res) => {
 })
 
 // WORKS IN BACKEND, NOT IN FRONTEND – Update training stats times by 1 
-app.put('/profile/:userId', async (req, res) => {
+app.put('/profile/:userId/updatestats', async (req, res) => {
   const { userId } = req.params
+  console.log(req.params)
   const ERR_COULD_NOT_FIND = `Could not find ${userId} to update`
   try {
     const updatedStats = await User.updateOne(
@@ -125,6 +126,7 @@ app.put('/profile/:userId', async (req, res) => {
     console.log(JSON.stringify(err))
     res.status(404).json({ message: ERR_COULD_NOT_FIND })
   }
+  console.log(req.body)
 })
 
 // WORKS - log in user
