@@ -1,43 +1,24 @@
-# Express Starter Project
+# Technico Bootcamp Final Project Backend
 
-This project includes the packages and babel setup for an express server, and is just meant to make things a little simpler to get up and running with.
+This is a project within Technigo frontend bootcamp, final sprint. The objective was to create an API with RESTful endpoints, using Express, MongoDB, Mongoose, and connect the endpoints to the frontend.
 
-## Getting started
+## How
 
-Install dependencies with `npm install`, then start the server by running `npm run dev`
+I have focused on a few basic endpoints in order to set up a user flow with registration, sign in and profile information, and secure the data with crypto and bcrypt. I have used one single Mongoose model for this. Moving forward, I will create more endpoints to update and change user data, along with developing the frontend further.
 
 
-# Endpoints
-
-Get all users – GET
-http://localhost:8080/users
-
-Registrer new user – POST
-http://localhost:8080/users
-
-Find one user – GET
-http://localhost:8080/users/5ee8d00be90d14052b7368c5
-
-Update training stats – PUT
-http://localhost:8080/profile/5ee8d00be90d14052b7368c5/updatestats
-
-Show user profile – GET
-http://localhost:8080/profile
-
-Login user – POST
-http://localhost:8080/sessions
-
+# Live endpoints
 
 Live link
 https://active-vaycay-backend.herokuapp.com/
 
-Get all users – GET
+Get all users – GET (not used in application yet)
 https://active-vaycay-backend.herokuapp.com/users
 
 Registrer new user – POST
 https://active-vaycay-backend.herokuapp.com/users
 
-Find one user – GET
+Find one user – GET (not used in application yet)
 https://active-vaycay-backend.herokuapp.com/users/5ee8d00be90d14052b7368c5
 
 Update training stats – PUT

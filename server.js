@@ -58,7 +58,7 @@ if (process.env.RESET_DATABASE) {
 const port = process.env.PORT || 8080
 const app = express()
 
-// Add middlewares to enable cors and json body parsing
+// Middlewares to enable cors and json body parsing
 app.use(cors())
 app.use(bodyParser.json())
 
@@ -110,7 +110,7 @@ app.get('/profile', async (req, res) => {
   res.json({ userId: req.user._id, times: req.user.times, name: req.user.name, activepackage: req.user.activepackage, training: req.user.training })
 })
 
-// PUT – Update training stats times by 1 
+// PUT – Update training/workout stats times by 1 
 app.put('/profile/:userId/updatestats', async (req, res) => {
   const { userId } = req.params
   console.log(req.params)
