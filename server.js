@@ -73,10 +73,6 @@ const authenticateUser = async (req, res, next) => {
   }
 }
 
-app.get('/', (req, res) => {
-  res.send('Final project backend')
-})
-
 //GET all users
 app.get('/users', async (req, res) => {
   const users = await User.find().exec()
@@ -84,10 +80,12 @@ app.get('/users', async (req, res) => {
 })
 
 // POST – registrer new user
+// researching database issue, user is saved but gone when revisiting page later
+// adding "await" before "new User"
 app.post('/users', async (req, res) => {
   try {
     const { name, email, password, activepackage, training } = req.body
-    const user = new User({ name, email, password: bcrypt.hashSync(password), activepackage, training })
+    const user = await new User({ name, email, password: bcrypt.hashSync(password), activepackage, training })
     user.save()
     res.status(201).json({ id: user._id, accessToken: user.accessToken })
   } catch (err) {
