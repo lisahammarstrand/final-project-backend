@@ -45,6 +45,7 @@ const User = mongoose.model('User', {
   }
 })
 
+// Deleting process.env RESET_DATABASE from Config Vars in Heroku to check if solves data storage issue
 if (process.env.RESET_DATABASE) {
   console.log('Resetting database ...')
 
