@@ -47,6 +47,7 @@ const User = mongoose.model('User', {
 
 // Deleting process.env RESET_DATABASE from Config Vars in Heroku to check if solves data storage issue
 // Pushing again to check DB
+// Success
 if (process.env.RESET_DATABASE) {
   console.log('Resetting database ...')
 
@@ -82,7 +83,6 @@ app.get('/users', async (req, res) => {
 })
 
 // POST – registrer new user
-// researching database issue, user is saved but gone when revisiting page later
 // adding "await" before "new User"
 app.post('/users', async (req, res) => {
   try {
@@ -111,18 +111,28 @@ app.get('/profile', async (req, res) => {
 })
 
 // PUT – Update training/workout stats times by 1 
+// Error handling: If findById = user id not found, ERR_COULD_NOT_FIND = Could not find userId to update. Try–Catch
+// If user update times more than 20 times, ERR_COULD_NOT_FIND = Limit is reached. If – else – throw
+// let instead of const to alter error message
 app.put('/profile/:userId/updatestats', async (req, res) => {
   const { userId } = req.params
   console.log(req.params)
-  const ERR_COULD_NOT_FIND = `Could not find ${userId} to update`
+  let ERR_COULD_NOT_FIND = `Could not find ${userId} to update`
   try {
-    const updatedStats = await User.updateOne(
-      { _id: userId },
-      { $inc: { times: 1 } }
-    )
-    res.status(201).json(updatedStats)
-  } catch (err) {
-    console.log(JSON.stringify(err))
+    const user = await User.findById(userId)
+
+    if (user.times < 20) {
+      const updatedStats = await User.updateOne(
+        { _id: userId },
+        { $inc: { times: 1 } }
+      )
+      res.status(201).json(updatedStats)
+    } else {
+      ERR_COULD_NOT_FIND = "Limit is reached"
+      throw (ERR_COULD_NOT_FIND)
+    }
+  } catch (error) {
+    console.log(JSON.stringify(error))
     res.status(404).json({ message: ERR_COULD_NOT_FIND })
   }
 })
