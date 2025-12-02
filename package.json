@@ -16,7 +16,7 @@
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^2.2.1",
     "cors": "^2.8.5",
-    "express": "^5.0.1",
+    "express": "^5.2.0",
     "mongoose": "^8.9.5",
     "nodemon": "^2.0.20"
   },
